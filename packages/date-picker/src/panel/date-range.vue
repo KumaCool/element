@@ -118,6 +118,8 @@
               :disabled-date="disabledDate"
               @changerange="handleChangeRange"
               :first-day-of-week="firstDayOfWeek"
+              @mouseup.native="handleMouseUp"
+              @mousedown.native="handleMouseDown"
               @pick="handleRangePick">
             </date-table>
           </div>
@@ -157,6 +159,8 @@
               :disabled-date="disabledDate"
               @changerange="handleChangeRange"
               :first-day-of-week="firstDayOfWeek"
+              @mouseup.native="handleMouseUp"
+              @mousedown.native="handleMouseDown"
               @pick="handleRangePick">
             </date-table>
           </div>
@@ -479,7 +483,14 @@
         }
       },
 
+      handleMouseDown(event) {
+        this.mousedownPick && this.mousedownPick.call(this, event);
+      },
+      handleMouseUp(event) {
+        this.mouseupPick && this.mouseupPick.call(this, event);
+      },
       handleRangePick(val, close = true) {
+        console.log(typeof val.maxDate);
         if (this.maxDate === val.maxDate && this.minDate === val.minDate) {
           return;
         }
