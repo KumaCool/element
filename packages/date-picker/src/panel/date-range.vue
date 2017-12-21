@@ -593,7 +593,7 @@
 
       // 修改日期: 最后一个参数为要修改的日期面板字段
       modifyDate() {
-        this[arguments[arguments.length - 1]] = modifyDate(...arguments)
+        this[arguments[arguments.length - 1]] = modifyDate(...arguments);
       },
 
       handleConfirm(visible = false) {
