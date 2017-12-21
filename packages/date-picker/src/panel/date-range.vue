@@ -483,14 +483,15 @@
         }
       },
 
+      // 鼠标按下触发事件
       handleMouseDown(event) {
         this.mousedownPick && this.mousedownPick.call(this, event);
       },
+      // 鼠标弹起触发事件
       handleMouseUp(event) {
         this.mouseupPick && this.mouseupPick.call(this, event);
       },
       handleRangePick(val, close = true) {
-        console.log(typeof val.maxDate);
         if (this.maxDate === val.maxDate && this.minDate === val.minDate) {
           return;
         }
@@ -588,6 +589,11 @@
         } else {
           this.rightDate = nextMonth(this.rightDate);
         }
+      },
+
+      // 修改日期: 最后一个参数为要修改的日期面板字段
+      modifyDate() {
+        this[arguments[arguments.length - 1]] = modifyDate(...arguments)
       },
 
       handleConfirm(visible = false) {
