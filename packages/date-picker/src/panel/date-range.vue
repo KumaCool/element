@@ -82,7 +82,7 @@
               </span>
             </span>
           </div>
-          <div class="el-custom-button-all" v-if="yearAll || monthAll">
+          <div class="el-custom-button-all" v-if="yearAll && yearAll.length > 0 || monthAll">
             <ul v-if="yearAll" class="el-custom-button-year-all">
               <li v-for="(n, index) in yearAll"
                 :class="buttonClassYear(index)">
@@ -103,7 +103,7 @@
             </ul>
           </div>
           <div class="el-picker-panel__content el-date-range-picker__content is-left">
-            <div v-if="!(yearAll || monthAll)" class="el-date-range-picker__header">
+            <div v-if="!yearAll || !monthAll" class="el-date-range-picker__header">
               <button
                 type="button"
                 @click="leftPrevYear"
@@ -144,7 +144,7 @@
             </date-table>
           </div>
           <div class="el-picker-panel__content el-date-range-picker__content is-right">
-            <div v-if="!(yearAll || monthAll)" class="el-date-range-picker__header">
+            <div v-if="!yearAll || !monthAll" class="el-date-range-picker__header">
               <button
                 type="button"
                 @click="rightPrevYear"
