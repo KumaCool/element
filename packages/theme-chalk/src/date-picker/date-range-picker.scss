@@ -16,6 +16,78 @@
     min-width: 513px;
   }
 
+  // 自增年月按钮样式
+  .el-custom-button-all {
+    // 按钮色
+    $color1: #9A58DB;
+    // 链接的背景底色
+    $color2: #E4C9FF;
+    padding: 5px 0;
+    background: linear-gradient(#FFF, #EDEDED);
+    ul {
+      margin: 0;
+      padding: 10px 15px;
+      display: flex;
+      flex-flow: row;
+      justify-content: space-around;
+    }
+    li {
+      position: relative;
+      height: 20px;
+      line-height: 20px;
+      list-style-type: none;
+    }
+    button {
+      position: relative;
+      margin: 0;
+      padding: 0 10px;
+      font-size: $--button-font-size;
+      z-index: 2;
+    }
+    .el-custom-button-active, .el-custom-button-active-first {
+      &::before {
+        position: absolute;
+        top: 1px;
+        right: -5px;
+        width: 12px;
+        height: 20px;
+        content: '';
+        background: $color2;
+        z-index: 1;
+      }
+      button {
+        color: $--color-white;
+        background: $color1;
+        border-radius: 50px;
+      }
+      &+.el-custom-button-active::before {
+        right: inherit;
+        left: -6px;
+      }
+    }
+    .el-custom-button-year-all {
+      justify-content: flex-start;
+      li {
+        padding: 0 20px;
+        &:first-of-type {padding-left: 0;}
+      }
+      .el-custom-button-active {
+        &::before {
+          width: 35px;
+        }
+      }
+    }
+    .el-custom-button-active-only button{
+      color: $--color-white;
+      background: $color1;
+      border-radius: 50px;
+    }
+    .el-custom-button-active-first::before {
+      right: inherit;
+      left: -6px;
+    }
+  }
+
   .el-picker-panel__content {
     margin: 0;
   }

@@ -82,8 +82,28 @@
               </span>
             </span>
           </div>
+          <div class="el-custom-button-all" v-if="yearAll || monthAll">
+            <ul v-if="yearAll" class="el-custom-button-year-all">
+              <li v-for="(n, index) in yearAll"
+                :class="buttonClassYear(index)">
+                <button
+                  type="button"
+                  class="el-picker-panel__icon-btn"
+                  @click="clickYear(n, index)">{{n}}年</button>
+              </li>
+            </ul>
+            <ul v-if="monthAll" class="el-custom-button-month-all">
+              <li v-for="(n, index) in 12"
+                :class="buttonClassMonth(index)">
+                <button
+                  type="button"
+                  class="el-picker-panel__icon-btn"
+                  @click="clickMonth(n)">{{n}}月</button>
+              </li>
+            </ul>
+          </div>
           <div class="el-picker-panel__content el-date-range-picker__content is-left">
-            <div class="el-date-range-picker__header">
+            <div v-if="!(yearAll || monthAll)" class="el-date-range-picker__header">
               <button
                 type="button"
                 @click="leftPrevYear"
@@ -124,7 +144,7 @@
             </date-table>
           </div>
           <div class="el-picker-panel__content el-date-range-picker__content is-right">
-            <div class="el-date-range-picker__header">
+            <div v-if="!(yearAll || monthAll)" class="el-date-range-picker__header">
               <button
                 type="button"
                 @click="rightPrevYear"
@@ -324,7 +344,16 @@
         maxTimePickerVisible: false,
         format: '',
         arrowControl: false,
-        unlinkPanels: false
+        unlinkPanels: false,
+        // 展开年份按钮
+        yearAll: null,
+        // 展开月份按钮
+        monthAll: false,
+        // 年月按钮样式选中记录
+        buttonClass: {
+          year: [0],
+          month: [1, 2]
+        }
       };
     },
 
@@ -407,6 +436,59 @@
     },
 
     methods: {
+      // 年份选中样式
+      buttonClassYear(i) {
+        if (this.buttonClass.year.some(v => v === i)) {
+          let length = this.buttonClass.year.length;
+          return length === 1 ? ['el-custom-button-active-only'] : ['el-custom-button-active'];
+        }
+      },
+      // 年份选中样式
+      buttonClassMonth(i) {
+        i = i + 1;
+        if (this.buttonClass.month.some(v => v === i)) {
+          return this.buttonClass.month[1] === i && i === 1 ? ['el-custom-button-active-first'] : ['el-custom-button-active'];
+        }
+      },
+      // 点击具体年份切换
+      clickYear(v, i) {
+        let arr;
+        let yearAllLast = this.yearAll[this.yearAll.length - 1];
+        if (this.buttonClass.month[0] === 12 && this.buttonClass.month[1] === 1 && this.yearAll[i] !== yearAllLast) {
+          arr = [i, i + 1];
+        } else arr = [i];
+        this.$set(this.buttonClass, 'year', arr);
+        this.leftDate = modifyDate(this.leftDate, v, this.leftMonth, this.leftMonthDate);
+        this.rightDate = modifyDate(this.rightDate, v, this.rightMonth, this.rightMonthDate);
+      },
+      // 点击具体月份
+      clickMonth(v) {
+        let arr;
+        let yearArr;
+        let yearLength = this.buttonClass.year.length;
+        if (v > 11) { // 跨年
+          arr = [12, 1];
+          if (yearLength === 1) {
+            yearArr = [
+              this.buttonClass.year[0],
+              this.buttonClass.year[0] + 1
+            ];
+          } else {
+            yearArr = [
+              this.buttonClass.year[1],
+              this.buttonClass.year[0] + 1
+            ];
+          }
+        } else {
+          arr = [v, v + 1];
+          if (yearLength !== 1) yearArr = [this.buttonClass.year[0]];
+        }
+        if (yearArr) this.$set(this.buttonClass, 'year', yearArr);
+        this.$set(this.buttonClass, 'month', arr);
+        this.leftDate = modifyDate(this.leftDate, this.leftYear, v, this.leftMonthDate);
+        this.rightDate = modifyDate(this.rightDate, this.rightYear, v, this.rightMonthDate);
+      },
+
       handleClear() {
         this.minDate = null;
         this.maxDate = null;

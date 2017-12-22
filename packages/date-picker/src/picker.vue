@@ -333,6 +333,13 @@ export default {
     },
     value: {},
     defaultValue: {},
+    yearAll: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
+    monthAll: Boolean,
     rangeSeparator: {
       default: '-'
     },
@@ -700,6 +707,8 @@ export default {
 
     mountPicker() {
       this.picker = new Vue(this.panel).$mount();
+      this.picker.yearAll = this.yearAll;
+      this.picker.monthAll = this.monthAll;
       this.picker.defaultValue = this.defaultValue;
       this.picker.popperClass = this.popperClass;
       this.popperElm = this.picker.$el;
