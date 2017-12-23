@@ -432,7 +432,7 @@
             ? right
             : nextMonth(this.leftDate);
         }
-        if (this.yearAll && this.monthAll) {
+        if (this.yearAll || this.monthAll) {
           let year = [
             this.leftYear,
             this.rightYear
@@ -455,7 +455,7 @@
               this.rightDate = modifyDate(this.rightDate, this.yearAll[0], 1, this.rightMonthDate);
               year = [0];
               month = [1, 2];
-            } else if (this.yearAll[length] <= this.rightYear) {
+            } else if (this.yearAll[length] <= this.leftYear) {
               this.leftDate = modifyDate(this.leftDate, this.yearAll[length], 10, this.leftMonthDate);
               this.rightDate = modifyDate(this.rightDate, this.yearAll[length], 11, this.rightMonthDate);
               year = [length];
