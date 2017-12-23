@@ -317,11 +317,6 @@
 
       enableYearArrow() {
         return this.unlinkPanels && this.rightYear * 12 + this.rightMonth - (this.leftYear * 12 + this.leftMonth + 1) >= 12;
-      },
-
-      // 年份按钮
-      buttonYear() {
-
       }
     },
 
@@ -456,7 +451,6 @@
           }
           this.$set(this, 'buttonClass', {year, month});
         }
-        // this.buttonClass.month = [2, 3];
       }
     },
 
@@ -494,6 +488,7 @@
         let yearArr;
         let yearLength = this.buttonClass.year.length;
         let rightYear;
+        // 最后一年12月份跳11月
         if (v >= 12 && this.yearAll.length - 1 === this.buttonClass.year[0]) v = 11;
         if (v >= 12) { // 跨年
           arr = [12, 1];
