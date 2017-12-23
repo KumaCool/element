@@ -64,7 +64,8 @@
         value8: '',
         value9: '',
         value10: '',
-        value11: ''
+        value11: '',
+        yearArr: [2016, 2017, 2018]
       };
     }
   };
@@ -223,6 +224,8 @@
       v-model="value6"
       type="daterange"
       range-separator="至"
+      :year-all="yearArr"
+      month-all
       start-placeholder="开始日期"
       end-placeholder="结束日期">
     </el-date-picker>
@@ -235,6 +238,8 @@
       align="right"
       unlink-panels
       range-separator="至"
+      :year-all="yearArr"
+      month-all
       start-placeholder="开始日期"
       end-placeholder="结束日期"
       :picker-options="pickerOptions2">
@@ -306,7 +311,9 @@
       type="daterange"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
-      default-value="2010-10-01">
+      :year-all="yearArr"
+      month-all
+      default-value="2015-12-01">
     </el-date-picker>
   </div>
 </template>

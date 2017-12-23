@@ -431,9 +431,11 @@
           this.rightDate = val && val[1] && this.unlinkPanels
             ? right
             : nextMonth(this.leftDate);
+        }
+        if (this.yearAll && this.monthAll) {
           let year = [
-            this.leftDate.getFullYear(),
-            this.rightDate.getFullYear()
+            this.leftYear,
+            this.rightYear
           ];
           let month = [
             this.leftDate.getMonth() + 1,
@@ -446,8 +448,19 @@
                 year[1] = i;
               }
             });
-            console.log(year);
-            if (year[0] === year[1]) year.pop();
+            // 默认时间不在年份列表内设为头年或尾年
+            let length = this.yearAll.length - 1;
+            if (this.yearAll[0] >= this.leftYear) {
+              this.leftDate = modifyDate(this.leftDate, this.yearAll[0], 0, this.leftMonthDate);
+              this.rightDate = modifyDate(this.rightDate, this.yearAll[0], 1, this.rightMonthDate);
+              year = [0];
+              month = [1, 2];
+            } else if (this.yearAll[length] <= this.rightYear) {
+              this.leftDate = modifyDate(this.leftDate, this.yearAll[length], 10, this.leftMonthDate);
+              this.rightDate = modifyDate(this.rightDate, this.yearAll[length], 11, this.rightMonthDate);
+              year = [length];
+              month = [11, 12];
+            } else if (year[0] === year[1]) year.pop();
           }
           this.$set(this, 'buttonClass', {year, month});
         }
