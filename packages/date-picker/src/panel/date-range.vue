@@ -484,45 +484,38 @@
       },
       // 点击具体年份切换
       clickYear(v, i) {
-        let arr;
+        let arr = [i];
         let yearAllLast = this.yearAll[this.yearAll.length - 1];
+        let rightYear = v;
+        // 跨年
         if (this.buttonClass.month[0] === 12 && this.buttonClass.month[1] === 1 && this.yearAll[i] !== yearAllLast) {
-          arr = [i, i + 1];
-        } else arr = [i];
+          arr[1] = i + 1;
+          rightYear = v + 1;
+        }
         this.$set(this.buttonClass, 'year', arr);
-        if (this.yearAll[i] !== yearAllLast || this.buttonClass.month[0] !== 12) {
-          this.leftDate = modifyDate(this.leftDate, v, this.leftMonth, this.leftMonthDate);
-          this.rightDate = modifyDate(this.rightDate, v, this.rightMonth, this.rightMonthDate);
-        } else this.clickMonth(11); // 如果是最后一年就跳到11月
+        this.leftDate = modifyDate(this.leftDate, v, this.leftMonth, this.leftMonthDate);
+        this.rightDate = modifyDate(this.rightDate, rightYear, this.rightMonth, this.rightMonthDate);
+        // 末年跨年跳转11月
+        if (this.yearAll[i] === yearAllLast && this.buttonClass.month[0] === 12 && this.buttonClass.month[1] === 1) this.clickMonth(11);
       },
       // 点击具体月份
       clickMonth(v) {
         let arr;
-        let yearArr;
-        let yearLength = this.buttonClass.year.length;
-        let rightYear;
-        // 最后一年12月份跳11月
-        if (v >= 12 && this.yearAll.length - 1 === this.buttonClass.year[0]) v = 11;
-        if (v >= 12) { // 跨年
+        let endYear = this.yearAll[this.yearAll.length - 1];
+        let index = this.yearAll.indexOf(this.leftYear);
+        let yearArr = [index];
+        let rightYear = this.leftYear;
+        // 末年跨年跳转11月
+        if (v >= 12 && this.leftYear === endYear) v = 11;
+        // 是否跨年
+        if (v >= 12) {
           arr = [12, 1];
-          if (yearLength === 1) {
-            yearArr = [
-              this.buttonClass.year[0],
-              this.buttonClass.year[0] + 1
-            ];
-          } else {
-            yearArr = [
-              this.buttonClass.year[1],
-              this.buttonClass.year[0] + 1
-            ];
-          }
-          rightYear = this.rightYear;
+          rightYear++;
+          yearArr = [index, index + 1];
         } else {
           arr = [v, v + 1];
-          if (yearLength !== 1) yearArr = [this.buttonClass.year[0]];
-          rightYear = this.leftYear;
         }
-        if (yearArr) this.$set(this.buttonClass, 'year', yearArr);
+        this.$set(this.buttonClass, 'year', yearArr);
         this.$set(this.buttonClass, 'month', arr);
         this.leftDate = modifyDate(this.leftDate, this.leftYear, arr[0] - 1, this.leftMonthDate);
         this.rightDate = modifyDate(this.rightDate, rightYear, arr[1] - 1, this.rightMonthDate);
