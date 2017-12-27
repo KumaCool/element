@@ -421,6 +421,7 @@
             this.leftDate = calcDefaultValue(this.defaultValue)[0];
             this.rightDate = nextMonth(this.leftDate);
           }
+          this.openPickerSetButtonClass();
         }
       },
 
@@ -432,6 +433,13 @@
             ? right
             : nextMonth(this.leftDate);
         }
+        this.openPickerSetButtonClass();
+      }
+    },
+
+    methods: {
+      // 打开面板时初始化按钮值
+      openPickerSetButtonClass() {
         if (this.yearAll || this.monthAll) {
           let year = [
             this.leftYear,
@@ -449,25 +457,24 @@
               }
             });
             // 默认时间不在年份列表内设为头年或尾年
-            let length = this.yearAll.length - 1;
-            if (this.yearAll[0] >= this.leftYear) {
+            let length = this.yearAll.length;
+            // 超出年份
+            if (this.yearAll.filter(v => v > this.leftYear).length === length) {
               this.leftDate = modifyDate(this.leftDate, this.yearAll[0], 0, this.leftMonthDate);
               this.rightDate = modifyDate(this.rightDate, this.yearAll[0], 1, this.rightMonthDate);
               year = [0];
               month = [1, 2];
-            } else if (this.yearAll[length] <= this.leftYear) {
-              this.leftDate = modifyDate(this.leftDate, this.yearAll[length], 10, this.leftMonthDate);
-              this.rightDate = modifyDate(this.rightDate, this.yearAll[length], 11, this.rightMonthDate);
-              year = [length];
+            // 小于年份
+          } else if (this.yearAll.filter(v => v < this.leftYear).length === length) {
+              this.leftDate = modifyDate(this.leftDate, this.yearAll[length - 1], 10, this.leftMonthDate);
+              this.rightDate = modifyDate(this.rightDate, this.yearAll[length - 1], 11, this.rightMonthDate);
+              year = [length - 1];
               month = [11, 12];
             } else if (year[0] === year[1]) year.pop();
           }
           this.$set(this, 'buttonClass', {year, month});
         }
-      }
-    },
-
-    methods: {
+      },
       // 年份选中样式
       buttonClassYear(i) {
         if (this.buttonClass.year.some(v => v === i)) {
