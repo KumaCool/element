@@ -93,8 +93,8 @@
               </li>
             </ul>
             <ul v-if="monthAll" class="el-custom-button-month-all">
-              <li v-for="(n, index) in 12"
-                :class="buttonClassMonth(index)">
+              <li v-for="n in monthButton"
+                :class="buttonClassMonth(n)">
                 <button
                   type="button"
                   class="el-picker-panel__icon-btn"
@@ -241,6 +241,18 @@
     mixins: [Locale],
 
     computed: {
+      // 月份按钮
+      monthButton() {
+        let monthArr = [];
+        for (let i = 0; i < 12; i++) {
+          monthArr[i] = i + 1;
+        }
+        // 如果是跨年就把12月放在第一位
+        if (this.buttonClass.month[0] === 12) {
+          monthArr.unshift(monthArr.pop());
+        }
+        return monthArr;
+      },
       btnDisabled() {
         return !(this.minDate && this.maxDate && !this.selecting);
       },
@@ -482,11 +494,11 @@
           return length === 1 ? ['el-custom-button-active-only'] : ['el-custom-button-active'];
         }
       },
-      // 年份选中样式
+      // 月份选中样式
       buttonClassMonth(i) {
-        i = i + 1;
         if (this.buttonClass.month.some(v => v === i)) {
-          return this.buttonClass.month[1] === i && i === 1 ? ['el-custom-button-active-first'] : ['el-custom-button-active'];
+          // return this.buttonClass.month[1] === i && i === 1 ? ['el-custom-button-active-first'] : ['el-custom-button-active'];
+          return ['el-custom-button-active'];
         }
       },
       // 点击具体年份切换
