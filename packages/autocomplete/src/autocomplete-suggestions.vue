@@ -38,6 +38,11 @@
     },
 
     props: {
+      // 建议列表宽
+      width: {
+        type: [Number, Boolean],
+        default: false
+      },
       options: {
         default() {
           return {
@@ -70,7 +75,11 @@
 
     created() {
       this.$on('visible', (val, inputWidth) => {
-        this.dropdownWidth = inputWidth + 'px';
+        let width = inputWidth;
+        if (Number.isInteger(this.width)) {
+            width = this.width;
+        } else if (this.width === false && inputWidth < 200) width = 200;
+        this.dropdownWidth = width + 'px';
         this.showPopper = val;
       });
     }

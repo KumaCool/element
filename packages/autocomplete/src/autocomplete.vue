@@ -40,6 +40,7 @@
       :class="[popperClass ? popperClass : '']"
       ref="suggestions"
       placement="bottom-start"
+      :width="width"
       :id="id">
       <li
         v-for="(item, index) in suggestions"
@@ -109,6 +110,11 @@
       debounce: {
         type: Number,
         default: 300
+      },
+      // 建议列表宽
+      width: {
+          type: [Number, Boolean],
+          default: false
       }
     },
     data() {

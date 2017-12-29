@@ -462,6 +462,7 @@ export default {
       v-model="state1"
       :fetch-suggestions="querySearch"
       placeholder="请输入内容"
+      :width="300"
       @select="handleSelect"
     ></el-autocomplete>
   </el-col>
