@@ -4,7 +4,7 @@
       v-show="showPopper"
       class="el-autocomplete-suggestion el-popper"
       :class="{ 'is-loading': parent.loading }"
-      :style="{ width: dropdownWidth }"
+      :style="dropdownWidth"
       role="region"
     >
       <el-scrollbar
@@ -75,11 +75,20 @@
 
     created() {
       this.$on('visible', (val, inputWidth) => {
-        let width = inputWidth;
+        let width,
+            minWidth,
+            maxWidth;
         if (Number.isInteger(this.width)) {
-            width = this.width;
-        } else if (this.width === false && inputWidth < 200) width = 200;
-        this.dropdownWidth = width + 'px';
+            width = this.width + 'px';
+        } else if (this.width === false && inputWidth < 200) {
+            minWidth = 50 + 'px';
+            maxWidth = 200 + 'px';
+        } else width = inputWidth + 'px';
+        this.dropdownWidth = {
+            width,
+            minWidth,
+            maxWidth
+        };
         this.showPopper = val;
       });
     }
