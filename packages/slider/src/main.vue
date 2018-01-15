@@ -31,11 +31,17 @@
         :style="barStyle">
       </div>
       <slider-button
+        :tooltip-show="tooltipShow"
+        :popper-class="popperClass"
+        :placement="placementFormat[0]"
         :vertical="vertical"
         v-model="firstValue"
         ref="button1">
       </slider-button>
       <slider-button
+        :tooltip-show="tooltipShow"
+        :popper-class="popperClass"
+        :placement="placementFormat[1]"
         :vertical="vertical"
         v-model="secondValue"
         ref="button2"
@@ -116,7 +122,16 @@
       },
       label: {
         type: String
-      }
+      },
+      // Tooltip 是否常态显示
+      tooltipShow: {
+        type: Boolean,
+        default: false
+      },
+      // Tooltip 的出现位置
+      placement: [String, Array],
+      // Tooltip 的样式名
+      popperClass: String
     },
 
     components: {
@@ -259,6 +274,11 @@
     },
 
     computed: {
+      // tooltip值格式化
+      placementFormat() {
+        return Array.isArray(this.placement) ? this.placement : [this.placement, this.placement];
+      },
+
       stops() {
         if (this.step === 0) {
           process.env.NODE_ENV !== 'production' &&

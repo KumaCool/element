@@ -15,7 +15,7 @@
     @keydown.down.prevent="onLeftKeyDown"
     @keydown.up.prevent="onRightKeyDown"
   >
-    <el-tooltip placement="top" ref="tooltip" :disabled="!showTooltip">
+    <el-tooltip :placement="placement" ref="tooltip" :value="false" :manual="true" :disabled="!showTooltip" :popper-class="popperClass">
       <span slot="content">{{ formatValue }}</span>
       <div class="el-slider__button" :class="{ 'hover': hovering, 'dragging': dragging }"></div>
     </el-tooltip>
@@ -40,11 +40,24 @@
       vertical: {
         type: Boolean,
         default: false
-      }
+      },
+      // Tooltip 是否常态显示
+      tooltipShow: {
+        type: Boolean,
+        default: true
+      },
+      // Tooltip 的出现位置
+      placement: {
+        type: String,
+        default: 'top'
+      },
+      // Tooltip 的样式名
+      popperClass: String
     },
 
     data() {
       return {
+        tooltipValue: true,
         hovering: false,
         dragging: false,
         isClick: false,
@@ -103,6 +116,10 @@
     watch: {
       dragging(val) {
         this.$parent.dragging = val;
+      },
+      tooltipValue(val) {
+        console.log(val);
+        if (this.tooltipShow) this.tooltipValue = true;
       }
     },
 
