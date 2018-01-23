@@ -336,7 +336,7 @@ export default {
     yearAll: {
       type: Array,
       default() {
-        return [];
+        return null;
       }
     },
     monthAll: Boolean,
