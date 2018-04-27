@@ -4,6 +4,7 @@
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
     @mousedown="onButtonDown"
+    @touchstart="onButtonDown"
     :class="{ 'hover': hovering, 'dragging': dragging }"
     :style="wrapperStyle"
     ref="button"
@@ -15,7 +16,11 @@
     @keydown.down.prevent="onLeftKeyDown"
     @keydown.up.prevent="onRightKeyDown"
   >
-    <el-tooltip :placement="placement" ref="tooltip" :value="false" :manual="true" :disabled="!showTooltip" :popper-class="popperClass">
+    <el-tooltip
+      :placement="placement"
+      ref="tooltip"
+      :popper-class="tooltipClass"
+      :disabled="!showTooltip">
       <span slot="content">{{ formatValue }}</span>
       <div class="el-slider__button" :class="{ 'hover': hovering, 'dragging': dragging }"></div>
     </el-tooltip>
@@ -51,8 +56,7 @@
         type: String,
         default: 'top'
       },
-      // Tooltip 的样式名
-      popperClass: String
+      tooltipClass: String
     },
 
     data() {
@@ -73,7 +77,7 @@
 
     computed: {
       disabled() {
-        return this.$parent.disabled;
+        return this.$parent.sliderDisabled;
       },
 
       max() {
@@ -147,7 +151,9 @@
         event.preventDefault();
         this.onDragStart(event);
         window.addEventListener('mousemove', this.onDragging);
+        window.addEventListener('touchmove', this.onDragging);
         window.addEventListener('mouseup', this.onDragEnd);
+        window.addEventListener('touchend', this.onDragEnd);
         window.addEventListener('contextmenu', this.onDragEnd);
       },
       onLeftKeyDown() {
@@ -163,6 +169,10 @@
       onDragStart(event) {
         this.dragging = true;
         this.isClick = true;
+        if (event.type === 'touchstart') {
+          event.clientY = event.touches[0].clientY;
+          event.clientX = event.touches[0].clientX;
+        }
         if (this.vertical) {
           this.startY = event.clientY;
         } else {
@@ -178,6 +188,10 @@
           this.displayTooltip();
           this.$parent.resetSize();
           let diff = 0;
+          if (event.type === 'touchmove') {
+            event.clientY = event.touches[0].clientY;
+            event.clientX = event.touches[0].clientX;
+          }
           if (this.vertical) {
             this.currentY = event.clientY;
             diff = (this.startY - this.currentY) / this.$parent.sliderSize * 100;
@@ -205,7 +219,9 @@
             }
           }, 0);
           window.removeEventListener('mousemove', this.onDragging);
+          window.removeEventListener('touchmove', this.onDragging);
           window.removeEventListener('mouseup', this.onDragEnd);
+          window.removeEventListener('touchend', this.onDragEnd);
           window.removeEventListener('contextmenu', this.onDragEnd);
         }
       },

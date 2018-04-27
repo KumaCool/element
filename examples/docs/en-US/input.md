@@ -1,4 +1,4 @@
-<script>
+﻿<script>
   export default {
     data() {
       return {
@@ -509,9 +509,9 @@ Customize how suggestions are displayed.
     slot="suffix"
     @click="handleIconClick">
   </i>
-  <template slot-scope="props">
-    <div class="value">{{ props.item.value }}</div>
-    <span class="link">{{ props.item.link }}</span>
+  <template slot-scope="{ item }">
+    <div class="value">{{ item.value }}</div>
+    <span class="link">{{ item.link }}</span>
   </template>
 </el-autocomplete>
 
@@ -544,7 +544,7 @@ Customize how suggestions are displayed.
     methods: {
       querySearch(queryString, cb) {
         var links = this.links;
-        var results = queryString ? link.filter(this.createFilter(queryString)) : links;
+        var results = queryString ? links.filter(this.createFilter(queryString)) : links;
         // call callback function to return suggestion objects
         cb(results);
       },
@@ -644,8 +644,8 @@ Search data from server-side.
 | ----| ----| ----| ---- | ----- |
 |type| type of input | string | text / textarea | text |
 |value| binding value | string / number| — | — |
-|maxlength| maximum Input text length| number| — | — |
-|minlength| minimum Input text length| number | — | — |
+|maxlength| same as `maxlength` in native input | number| — | — |
+|minlength| same as `minlength` in native input | number | — | — |
 |placeholder| placeholder of Input| string | — | — |
 | clearable | whether to show clear button | boolean | — | false |
 |disabled | whether Input is disabled | boolean | — | false |
@@ -664,6 +664,7 @@ Search data from server-side.
 |autofocus | same as `autofocus` in native input | boolean | — | false |
 |form | same as `form` in native input | string | — | — |
 | label | label text | string | — | — |
+| tabindex | input tabindex | string | - | - |
 
 ### Input slots
 
@@ -681,6 +682,15 @@ Search data from server-side.
 | blur | triggers when Input blurs | (event: Event) |
 | focus | triggers when Input focuses | (event: Event) |
 | change | triggers when the icon inside Input value change | (value: string \| number) |
+| clear | triggers when the Input is cleared by clicking the clear button | — |
+
+### Input Methods
+
+| Method | Description | Parameters |
+|------|--------|-------|
+| focus | focus the input element | — |
+| blur | blur the input element | — |
+| select | select the text in input element | — |
 
 ### Autocomplete Attributes
 
@@ -688,21 +698,21 @@ Attribute | Description | Type | Options | Default
 |----| ----| ----| ---- | -----|
 |placeholder| the placeholder of Autocomplete| string | — | — |
 |disabled | whether Autocomplete is disabled  | boolean | — | false|
-| valueKey | key name of the input suggestion object for display | string | — | value |
+| value-key | key name of the input suggestion object for display | string | — | value |
 |icon | icon name | string | — | — |
 |value | binding value | string | — | — |
 | debounce | debounce delay when typing, in milliseconds | number | — | 300 |
+| placement | placement of the popup menu | string | top / top-start / top-end / bottom / bottom-start / bottom-end | bottom-start |
 |fetch-suggestions | a method to fetch input suggestions. When suggestions are ready, invoke `callback(data:[])` to return them to Autocomplete | Function(queryString, callback) | — | — |
 | popper-class | custom class name for autocomplete's dropdown | string | — | — |
 | trigger-on-focus | whether show suggestions when input focus | boolean | — | true |
-| on-icon-click | hook function when clicking on the input icon | function | — | — |
 | name | same as `name` in native input | string | — | — |
 | select-when-unmatched | whether to emit a `select` event on enter when there is no autocomplete match | boolean | — | false |
 | label | label text | string | — | — |
 | prefix-icon | prefix icon class | string | — | — |
 | suffix-icon | suffix icon class | string | — | — |
 
-### Autocomplete slots
+### Autocomplete Slots
 
 | Name | Description |
 |------|--------|
@@ -711,13 +721,19 @@ Attribute | Description | Type | Options | Default
 | prepend | content to prepend before Input |
 | append | content to append after Input |
 
+### Autocomplete Scoped Slot
+| Name | Description |
+|------|--------|
+| — | Custom content for input suggestions. The scope parameter is { item } |
+
 ### Autocomplete Events
 
 | Event Name | Description | Parameters |
 |----| ----| ----|
 |select | triggers when a suggestion is clicked | suggestion being clicked |
 
-### Methods
+### Autocomplete Methods
+
 | Method | Description | Parameters |
 |------|--------|-------|
-| focus | focus the Input component | — |
+| focus | focus the input element | — |
