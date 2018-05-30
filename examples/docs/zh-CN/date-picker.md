@@ -65,7 +65,7 @@
         value9: '',
         value10: '',
         value11: '',
-        yearArr: [2016, 2017, 2018]
+        yearArr: [2016, 2017, 2018],
         value12: '',
         value13: [],
         value14: []
