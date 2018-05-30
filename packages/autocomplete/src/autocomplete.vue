@@ -114,8 +114,8 @@
       },
       // 建议列表宽
       width: {
-          type: [Number, Boolean],
-          default: false
+        type: [Number, Boolean],
+        default: false
       },
       placement: {
         type: String,

@@ -494,7 +494,7 @@
               year = [0];
               month = [1, 2];
             // 小于年份
-          } else if (this.yearAll.filter(v => v < this.leftYear).length === length) {
+            } else if (this.yearAll.filter(v => v < this.leftYear).length === length) {
               this.leftDate = modifyDate(this.leftDate, this.yearAll[length - 1], 10, this.leftMonthDate);
               this.rightDate = modifyDate(this.rightDate, this.yearAll[length - 1], 11, this.rightMonthDate);
               year = [length - 1];

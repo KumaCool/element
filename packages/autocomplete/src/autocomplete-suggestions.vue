@@ -74,18 +74,18 @@
     created() {
       this.$on('visible', (val, inputWidth) => {
         let width,
-            minWidth,
-            maxWidth;
+          minWidth,
+          maxWidth;
         if (Number.isInteger(this.width)) {
-            width = this.width + 'px';
+          width = this.width + 'px';
         } else if (this.width === false && inputWidth < 200) {
-            minWidth = 50 + 'px';
-            maxWidth = 200 + 'px';
+          minWidth = 50 + 'px';
+          maxWidth = 200 + 'px';
         } else width = inputWidth + 'px';
         this.dropdownWidth = {
-            width,
-            minWidth,
-            maxWidth
+          width,
+          minWidth,
+          maxWidth
         };
         this.showPopper = val;
       });
